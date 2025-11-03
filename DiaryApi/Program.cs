@@ -58,4 +58,9 @@ if (!Directory.Exists(uploadPath))
     Directory.CreateDirectory(uploadPath);
 }
 
+using var scope = app.Services.CreateScope();
+var diaryService = scope.ServiceProvider.GetRequiredService<IDiaryService>();
+
+await diaryService.InitializeDatabase();
+
 app.Run();

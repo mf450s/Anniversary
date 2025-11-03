@@ -248,12 +248,14 @@ public class DiaryController : ControllerBase
     /// <param name="entryId">Entry ID</param>
     /// <param name="image">Image file</param>
     /// <returns>Image information</returns>
-    [HttpPost("entries/{entryId}/images")]
-    public async Task<ActionResult<ApiResponse<DiaryImages>>> UploadImage(int entryId, [FromForm(Name = "image")] IFormFile image)
+[HttpPost("entries/{entryId}/images")]
+public async Task<ActionResult<ApiResponse<DiaryImages>>> UploadImage(int entryId, [FromForm] UploadImageModel imageModel)
+
 
     {
         try
         {
+            IFormFile image = imageModel.Image;
             var result = await _imageService.UploadImageAsync(entryId, image);
 
             return CreatedAtAction(nameof(GetImage), new { id = result?.Id },

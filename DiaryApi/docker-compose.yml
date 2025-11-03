@@ -17,6 +17,22 @@ services:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 20s
       retries: 10
+  api:
+    build: .
+    container_name: diary_api
+    environment:
+      ConnectionStrings__DefaultConnection: "Server=mysql;Port=3306;Database=diary_db;User=root;Password=root;"
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:5000
+    ports:
+      - "5000:5000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - diary-network
+    volumes:
+      - ./uploads:/app/uploads
 
 volumes:
   mysql_data:
